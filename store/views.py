@@ -173,17 +173,18 @@ def commander_service(request):
 def inscription(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
-        if form.is_valid():
+        email = request.POST.get('email')
+        
+        if form.is_valid() and email:
             user = form.save(commit=False)
-            user.is_active = False  # Inaktif jiskaske l mete kòd verifikasyon an
+            user.email = email
+            user.is_active = False  
             user.save()
 
-            # Jenere epi sove kòd verifikasyon 6 chif la
             verification, created = EmailVerification.objects.get_or_create(user=user)
             verification.code = str(random.randint(100000, 999999))
             verification.save()
 
-            # Voye imèl la
             send_mail(
                 'Kòd Verifikasyon Kont JeffTech Ou',
                 f'Bonjou {user.username},\n\nKòd verifikasyon ou an se: {verification.code}\n\nAntre kòd sa a sou sit la pou aktive kont ou.',
