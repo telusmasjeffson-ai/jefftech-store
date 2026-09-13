@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-dark m-0">
+            <i class="bi bi-speedometer2 text-primary me-2"></i> Dashboard Admin - Gestion des Commandes
+        </h2>
+        <a href="{% url 'accueil' %}" class="btn btn-outline-primary rounded-pill px-4 fw-bold shadow-sm">
+            <i class="bi bi-house-door me-1"></i> Retour à la boutique
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="py-3">#ID</th>
+                        <th class="py-3">Client</th>
+                        <th class="py-3">Détails de la Commande & Articles</th>
+                        <th class="py-3">Moyen</th>
+                        <th class="py-3">Total</th>
+                        <th class="py-3 text-center">Preuve</th>
+                        <th class="py-3">Statut actuel</th>
+                        <th class="py-3">Changer Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for commande in commandes %}
+                    <tr>
+                        <td class="fw-bold text-primary">#{{ commande.id }}</td>
+                        <td>
+                            <span class="fw-bold text-dark">{{ commande.user.username }}</span>
+                        </td>
+                        <td>
+                            <div class="mb-2">
+                                <i class="bi bi-whatsapp text-success me-1"></i><strong>{{ commande.whatsapp }}</strong><br>
+                                <i class="bi bi-geo-alt text-muted me-1"></i><small class="text-muted">{{ commande.adresse_livraison }}</small>
+                            </div>
+                            
+                            <!-- LIS ATIK YO ANNDAN ADMIN LAN -->
+                            <div class="bg-light p-2 rounded-3 border">
+                                <small class="text-secondary fw-bold d-block mb-1"><i class="bi bi-basket me-1"></i> Articles commandés:</small>
+                                <ul class="mb-0 ps-3 small">
+                                    {% for item in commande.items.all %}
+                                        <li>
+                                            <strong>{{ item.quantite }}x</strong> {{ item.produit.nom|default:"Sèvis espesyal" }} 
+                                            <span class="text-muted">(${{ item.prix }} chak)</span>
+                                        </li>
+                                    {% empty %}
+                                        <li class="text-muted"><em>Kòmand sèvis / Pa gen atik pwodui</em></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-secondary px-2 py-1">{{ commande.get_moyen_paiement_display|default:commande.moyen_paiement }}</span>
+                        </td>
+                        <td class="fw-bold text-success">${{ commande.total }}</td>
+                        <td class="text-center">
+                            {% if commande.preuve %}
+                                <a href="{{ commande.preuve.url }}" target="_blank" class="btn btn-sm btn-outline-info rounded-pill px-3">
+                                    <i class="bi bi-eye"></i> Voir
+                                </a>
+                            {% else %}
+                                <span class="text-muted small">Aucune</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="badge 
+                                {% if commande.statut == 'en_attente' %} bg-warning text-dark
+                                {% elif commande.statut == 'rejete' %} bg-danger
+                                {% elif commande.statut == 'livre' %} bg-success
+                                {% else %} bg-primary {% endif %} px-3 py-2 rounded-pill">
+                                {{ commande.get_statut_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <form method="POST" class="d-flex align-items-center gap-2">
+                                {% csrf_token %}
+                                <input type="hidden" name="commande_id" value="{{ commande.id }}">
+                                <select name="statut" class="form-select form-select-sm rounded-pill">
+                                    <option value="en_attente" {% if commande.statut == 'en_attente' %}selected{% endif %}>En attente</option>
+                                    <option value="approuve" {% if commande.statut == 'approuve' %}selected{% endif %}>Paiement Validé</option>
+                                    <option value="emballe" {% if commande.statut == 'emballe' %}selected{% endif %}>Commande Emballée</option>
+                                    <option value="expedie" {% if commande.statut == 'expedie' %}selected{% endif %}>En cours de Livraison</option>
+                                    <option value="livre" {% if commande.statut == 'livre' %}selected{% endif %}>Livré avec Succès</option>
+                                    <option value="rejete" {% if commande.statut == 'rejete' %}selected{% endif %}>Commande Rejetée</option>
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold shadow-sm">
+                                    Modifier
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center py-4 text-muted">
+                            <em>Aucune commande enregistrée pour le moment.</em>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

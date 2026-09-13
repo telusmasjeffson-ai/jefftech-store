@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-dark m-0"><i class="bi bi-bag-check-fill text-primary me-2"></i> Mes Commandes</h2>
+        <a href="{% url 'accueil' %}" class="btn btn-outline-primary rounded-pill px-4 fw-bold shadow-sm">
+            <i class="bi bi-arrow-left me-1"></i> Continuer vos achats
+        </a>
+    </div>
+
+    {% if commandes %}
+        <div class="row g-4">
+            {% for commande in commandes %}
+            <div class="col-12">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                    <!-- Tèt kòmand lan -->
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                        <div>
+                            <h5 class="fw-bold text-dark m-0">Commande #{{ commande.id }}</h5>
+                            <small class="text-muted"><i class="bi bi-calendar-event me-1"></i> {{ commande.date_commande }}</small>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="badge bg-light text-dark border px-3 py-2 rounded-pill shadow-sm">
+                                <i class="bi bi-credit-card me-1 text-primary"></i> {{ commande.get_moyen_paiement_display|default:commande.moyen_paiement }}
+                            </span>
+                            <span class="fw-bold text-primary fs-5">${{ commande.total }}</span>
+                        </div>
+                    </div>
+
+                    <hr class="text-muted opacity-25">
+
+                    <!-- Enfòmasyon Adrès oswa Sèvis -->
+                    <div class="mb-3">
+                        {% if "Sèvis:" in commande.adresse_livraison %}
+                            <div class="alert alert-primary bg-primary bg-opacity-10 border-0 rounded-3 p-3">
+                                <p class="text-dark mb-1"><strong class="text-primary"><i class="bi bi-info-circle-fill me-1"></i> Tip Sèvis:</strong> {{ commande.adresse_livraison }}</p>
+                                <p class="text-muted small mb-0"><strong>WhatsApp:</strong> {{ commande.whatsapp }}</p>
+                            </div>
+                        {% else %}
+                            <p class="text-dark mb-1"><strong>Adrès livrezon:</strong> {{ commande.adresse_livraison }}</p>
+                            <p class="text-muted small mb-0"><strong>WhatsApp:</strong> {{ commande.whatsapp }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- LIS PWODWI / ATIK KI ACHTE YO -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold text-secondary mb-2"><i class="bi bi-basket me-1"></i> Produits / Articles commandés:</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Article</th>
+                                        <th class="text-center">Quantité</th>
+                                        <th class="text-end">Prix Unitaire</th>
+                                        <th class="text-end">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in commande.items.all %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                {% if item.produit and item.produit.image %}
+                                                    <img src="{{ item.produit.image.url }}" alt="" style="width: 40px; height: 40px; object-fit: cover;" class="rounded">
+                                                {% endif %}
+                                                <span>{{ item.produit.nom|default:"Sèvis / Atik espesyal" }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">{{ item.quantite }}</td>
+                                        <td class="text-end">${{ item.prix }}</td>
+                                        <td class="text-end fw-bold">${{ item.total_ligne }}</td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted py-2">
+                                            <em>Pa gen atik anrejistre dirèkteman (oswa kòmand sèvis).</em>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- ESTATI AK ETAP KÒMAND LAN -->
+                    {% if "Sèvis:" in commande.adresse_livraison %}
+                        <div class="row text-center g-2 py-3 bg-light rounded-4 border">
+                            <div class="col-6 position-relative">
+                                <div class="p-2 rounded-3 {% if commande.statut != 'en_attente' and commande.statut != 'rejete' %}text-primary fw-bold{% else %}text-muted{% endif %}">
+                                    <i class="bi bi-hourglass-split fs-3 d-block mb-1"></i>
+                                    <small>1. En cours / Validé</small>
+                                </div>
+                            </div>
+                            <div class="col-6 position-relative">
+                                <div class="p-2 rounded-3 {% if commande.statut == 'livre' or commande.statut == 'termine' and commande.statut != 'rejete' %}text-success fw-bold{% else %}text-muted{% endif %}">
+                                    <i class="bi bi-check-circle-fill fs-3 d-block mb-1"></i>
+                                    <small>2. Terminé</small>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="row text-center g-2 py-3 bg-light rounded-4 border">
+                            <div class="col-3">
+                                <div class="p-2 {% if commande.statut != 'en_attente' and commande.statut != 'rejete' %}text-primary fw-bold{% else %}text-muted{% endif %}">
+                                    <i class="bi bi-receipt fs-3 d-block mb-1"></i>
+                                    <small>1. Validé</small>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="p-2 {% if commande.statut == 'emballe' or commande.statut == 'expedie' or commande.statut == 'livre' and commande.statut != 'rejete' %}text-primary fw-bold{% else %}text-muted{% endif %}">
+                                    <i class="bi bi-box-seam fs-3 d-block mb-1"></i>
+                                    <small>2. Emballé</small>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="p-2 {% if commande.statut == 'expedie' or commande.statut == 'livre' and commande.statut != 'rejete' %}text-primary fw-bold{% else %}text-muted{% endif %}">
+                                    <i class="bi bi-truck fs-3 d-block mb-1"></i>
+                                    <small>3. En route</small>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="p-2 {% if commande.statut == 'livre' and commande.statut != 'rejete' %}text-success fw-bold{% else %}text-muted{% endif %}">
+                                    <i class="bi bi-check-circle fs-3 d-block mb-1"></i>
+                                    <small>4. Livré</small>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <!-- Estati tèks ak prèv -->
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <span class="badge rounded-pill px-3 py-2 
+                            {% if commande.statut == 'en_attente' %} bg-warning text-dark
+                            {% elif commande.statut == 'rejete' %} bg-danger text-white
+                            {% elif commande.statut == 'livre' or commande.statut == 'termine' %} bg-success text-white
+                            {% else %} bg-primary text-white {% endif %}">
+                            Statut: {{ commande.get_statut_display|default:commande.statut|title }}
+                        </span>
+
+                        {% if commande.preuve %}
+                            <a href="{{ commande.preuve.url }}" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill">
+                                <i class="bi bi-file-earmark-image me-1"></i> Voir la preuve
+                            </a>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-5 bg-white rounded-4 shadow-sm">
+            <i class="bi bi-bag-x text-muted display-4 d-block mb-3"></i>
+            <h4 class="fw-bold text-dark">Aucune commande pour le moment</h4>
+            <p class="text-muted mb-4">Vous n'avez pas encore passé de commande sur JeffTech Multi_Store.</p>
+            <a href="{% url 'accueil' %}" class="btn btn-primary rounded-pill px-4 fw-bold">
+                Commencer mes achats
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

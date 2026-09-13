@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5 text-center">
+    <div class="card border-0 shadow-sm p-5 rounded-4 d-inline-block" style="max-width: 500px;">
+        <div class="text-warning mb-3">
+            <i class="bi bi-clock-history display-1"></i>
+        </div>
+        <h3 class="fw-bold mb-2">Commande En Cours !</h3>
+        <p class="text-muted">Nous avons bien reçu votre preuve de paiement. Votre commande est actuellement <strong class="text-warning">En cours de vérification</strong>. Nous vous contacterons sur WhatsApp dès validation.</p>
+        <a href="{% url 'accueil' %}" class="btn btn-primary rounded-pill px-4 mt-3">Retour à l'accueil</a>
+    </div>
+</div>
+{% endblock %}

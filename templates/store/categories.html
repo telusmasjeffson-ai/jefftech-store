@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <h3 class="fw-bold mb-4">Explorer par catégories</h3>
+
+    <!-- Filtre Bouton Kategori yo -->
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        <a href="{% url 'categories' %}" class="btn {% if not selected_categorie %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill px-4">
+            Tous les produits
+        </a>
+        {% for cat in categories %}
+            <a href="{% url 'categories' %}?categorie={{ cat.id }}" 
+               class="btn {% if selected_categorie == cat.id %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill px-4">
+                {{ cat.nom }}
+            </a>
+        {% endfor %}
+    </div>
+
+    <!-- Lis Pwodui yo -->
+    <div class="row g-4">
+        {% for produit in produits %}
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="card product-card h-100 border-0 p-3 shadow-sm rounded-4">
+                <div class="product-img-container">
+                    {% if produit.image %}
+                        <img src="{{ produit.image.url }}" class="img-fluid" alt="{{ produit.nom }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/150" class="img-fluid" alt="No image">
+                    {% endif %}
+                </div>
+                <div class="card-body d-flex flex-column p-0 mt-3">
+                    <h6 class="card-title fw-bold text-dark text-truncate mb-1">{{ produit.nom }}</h6>
+                    <p class="fw-bold text-primary fs-5 mb-2">${{ produit.prix }}</p>
+                    
+                    <!-- Boutons kòt a kòt -->
+                    <div class="d-flex gap-2 mt-auto">
+                        <!-- Bouton Voir détails -->
+                        <a href="{% url 'detail_produit' produit.id %}" class="btn btn-outline-primary btn-sm rounded-pill w-100 fw-semibold d-flex align-items-center justify-content-center">
+                            Voir détails
+                        </a>
+                        
+                        <!-- Bouton Ajouter au panier -->
+                        <a href="{% url 'ajouter_au_panier' produit.id %}" class="btn btn-primary btn-sm rounded-pill px-3 fw-semibold d-flex align-items-center justify-content-center" title="Ajouter au panier">
+                            <i class="bi bi-cart-plus fs-6"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5 text-muted">
+            <p>Aucun produit trouvé dans cette catégorie.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-lg rounded-4 p-4">
+                <h3 class="fw-bold mb-4 text-center"><i class="bi bi-credit-card text-success me-2"></i> Finaliser votre commande</h3>
+                
+                <!-- Rezime Komand lan -->
+                <div class="bg-light p-3 rounded-3 mb-4">
+                    <h5 class="fw-bold mb-2">Résumé de la commande</h5>
+                    {% for item in articles %}
+                        <div class="d-flex justify-content-between text-muted border-bottom py-2">
+                            <span>{{ item.produit.nom }} (x{{ item.quantite }})</span>
+                            <span class="fw-bold text-dark">${{ item.total }}</span>
+                        </div>
+                    {% endfor %}
+                    <div class="d-flex justify-content-between fs-4 fw-bold mt-3 text-primary">
+                        <span>Total à payer:</span>
+                        <span>${{ total_general }}</span>
+                    </div>
+                </div>
+
+                <!-- Enfòmasyon pou Peman -->
+                <div class="alert alert-info rounded-3 mb-4">
+                    <h6 class="fw-bold mb-3"><i class="bi bi-info-circle me-2"></i> Informations de paiement :</h6>
+                    <ul class="list-unstyled mb-0 lh-lg">
+                        <li><strong><i class="bi bi-phone text-danger me-2"></i>MonCash :</strong> 47083431</li>
+                        <li><strong><i class="bi bi-shop text-warning me-2"></i>Natcash (Kòd Ajan) :</strong> 336164</li>
+                        <li><strong><i class="bi bi-currency-bitcoin text-warning me-2"></i>Binance ID :</strong> 720967675</li>
+                        <li><strong><i class="bi bi-card-heading text-primary me-2"></i>Meru Tag (Carte Meru) :</strong> $jefftech</li>
+                    </ul>
+                </div>
+
+                <!-- Fòmilè Peman an -->
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Adresse Email</label>
+                        <input type="email" name="email" class="form-control rounded-3" placeholder="exemple@gmail.com" value="{{ request.user.email }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Moyen de paiement utilisé</label>
+                        <select name="moyen_paiement" class="form-select rounded-3" required>
+                            <option value="" selected disabled>Choisir le moyen utilisé...</option>
+                            <option value="MonCash">MonCash</option>
+                            <option value="Natcash">Natcash</option>
+                            <option value="Binance">Binance</option>
+                            <option value="Meru">Carte Meru</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Numéro WhatsApp (pour confirmation)</label>
+                        <input type="text" name="whatsapp" class="form-control rounded-3" placeholder="+509 XXXX XXXX" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Adresse exacte de livraison</label>
+                        <textarea name="adresse_livraison" class="form-control rounded-3" rows="2" placeholder="Eg: Rue Capois #45, Port-au-Prince, près de..." required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Note / Description du paiement (Optionnel)</label>
+                        <textarea name="description" class="form-control rounded-3" rows="3" placeholder="Ajoutez une note concernant votre paiement (ex: Nom du compte utilisé, ID de transaction, etc.)"></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Preuve de paiement (Capture d'écran / Reçu)</label>
+                        <input type="file" name="preuve" class="form-control rounded-3" accept="image/*" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-lg w-100 rounded-pill fw-bold">
+                        Confirmer et envoyer la preuve
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

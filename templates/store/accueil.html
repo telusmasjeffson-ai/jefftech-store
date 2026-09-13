@@ -1,0 +1,363 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Banner Hero -->
+<div class="container my-4">
+    <div class="card border-0 rounded-4 shadow-sm overflow-hidden position-relative" 
+         style="background: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat; min-height: 420px;">
+        
+        <div class="card-img-overlay d-flex align-items-center p-4 p-md-5">
+            <div class="bg-white p-4 p-md-5 rounded-4 shadow-lg" style="max-width: 480px;">
+                <h1 class="fw-bold text-dark mb-3" style="font-size: 2.2rem;">
+                    Bienvenue sur <span class="text-primary">JeffTech Multi_Store</span>
+                </h1>
+                <p class="text-secondary fw-medium fs-6 mb-2">Des produits de qualité à portée de clic.</p>
+                <p class="small text-muted mb-4">Informatique • Accessoires • Gadgets • Et plus encore</p>
+                
+                <a href="#produits" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm">
+                    Découvrir nos produits <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Seksyon Sèvis Siplemantè -->
+<div class="container my-5" id="services">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold m-0 text-dark">Nos Services Supplémentaires</h3>
+        <span class="btn btn-dark rounded-pill px-4 py-2 fw-bold shadow-sm d-inline-flex align-items-center">
+            <i class="bi bi-grid-fill me-2"></i> Services Supplémentaires
+        </span>
+    </div>
+
+    <div class="row g-4">
+        <!-- Recharge Meru Card -->
+        <div class="col-6 col-md-3">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                <div class="bg-light text-center p-3">
+                    <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=600&auto=format&fit=crop" class="rounded-3 w-100" style="height: 140px; object-fit: cover;" alt="Meru Card">
+                </div>
+                <div class="card-body d-flex flex-column justify-content-between text-center">
+                    <div>
+                        <h6 class="fw-bold text-dark mb-1">Recharge Meru Card</h6>
+                        <p class="small text-muted mb-3">Rechargez votre carte en toute sécurité.</p>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill w-100" data-bs-toggle="modal" data-bs-target="#meruModal">
+                        Profiter
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achat USDT -->
+        <div class="col-6 col-md-3">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                <div class="bg-light text-center p-3">
+                    <img src="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?q=80&w=600&auto=format&fit=crop" class="rounded-3 w-100" style="height: 140px; object-fit: cover;" alt="Achat USDT">
+                </div>
+                <div class="card-body d-flex flex-column justify-content-between text-center">
+                    <div>
+                        <h6 class="fw-bold text-dark mb-1">Achat USDT</h6>
+                        <p class="small text-muted mb-3">Achetez vos cryptos rapidement.</p>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-success rounded-pill w-100" data-bs-toggle="modal" data-bs-target="#usdtModal">
+                        Acheter
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Abonnements Netflix -->
+        <div class="col-6 col-md-3">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                <div class="bg-light text-center p-3">
+                    <img src="https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?q=80&w=600&auto=format&fit=crop" class="rounded-3 w-100" style="height: 140px; object-fit: cover;" alt="Netflix">
+                </div>
+                <div class="card-body d-flex flex-column justify-content-between text-center">
+                    <div>
+                        <h6 class="fw-bold text-dark mb-1">Abonnements Netflix</h6>
+                        <p class="small text-muted mb-3">Profitez de vos séries préférées.</p>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-danger rounded-pill w-100" data-bs-toggle="modal" data-bs-target="#netflixModal">
+                        S'abonner
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cartes Cadeaux iPhone -->
+        <div class="col-6 col-md-3">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                <div class="bg-light text-center p-3">
+                    <img src="https://images.unsplash.com/photo-1526738549149-8e07eca6c147?q=80&w=600&auto=format&fit=crop" class="rounded-3 w-100" style="height: 140px; object-fit: cover;" alt="Gift card iPhone">
+                </div>
+                <div class="card-body d-flex flex-column justify-content-between text-center">
+                    <div>
+                        <h6 class="fw-bold text-dark mb-1">Cartes Cadeaux iPhone</h6>
+                        <p class="small text-muted mb-3">Gift cards App Store & iTunes.</p>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-dark rounded-pill w-100" data-bs-toggle="modal" data-bs-target="#appleModal">
+                        Commander
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= MODALS SÈVIS SIPLEMANTÈ ================= -->
+
+<!-- 1. MODAL MERU CARD -->
+<div class="modal fade" id="meruModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <div class="modal-header bg-primary text-white rounded-top-4">
+                <h5 class="modal-title fw-bold"><i class="bi bi-credit-card-2-front me-2"></i> Recharge Meru Card</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form method="POST" action="{% url 'commander_service' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="type_service" value="meru">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Meru Tag ou Email</label>
+                        <input type="text" name="meru_tag" class="form-control rounded-pill" placeholder="$user" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Nimewo WhatsApp</label>
+                        <input type="tel" name="whatsapp" class="form-control rounded-pill" placeholder="Eg: +509 XXXX XXXX" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Imèl (Email)</label>
+                        <input type="email" name="email" class="form-control rounded-pill" placeholder="ou@example.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Kantite kòb ($)</label>
+                        <input type="number" id="meruUSD" name="montant_usd" class="form-control rounded-pill" placeholder="Eg: 20" min="1" required oninput="kalkileMeru()">
+                    </div>
+                    <div class="alert alert-info rounded-3 py-2 small mb-3">
+                        <div><strong>Taux du jour:</strong> 1 USD = 143 HTG</div>
+                        <div class="mt-1 text-primary fw-bold" id="meruHTG">Total: 0 HTG</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Mwayen Peman</label>
+                        <select name="moyen_paiement" class="form-select rounded-pill" required>
+                            <option value="" selected disabled>Chwazi opsyon peman</option>
+                            <option value="natcash">Natcash (Kòd Ajan: 336164)</option>
+                            <option value="moncash">Moncash (Nimewo: 47083431)</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-muted">Prèv Peman (Capture / Reçu)</label>
+                        <input type="file" name="preuve" class="form-control rounded-3" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary rounded-pill w-100 fw-bold py-2">Valide a Recharge</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 2. MODAL ACHAT USDT -->
+<div class="modal fade" id="usdtModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <div class="modal-header bg-success text-white rounded-top-4">
+                <h5 class="modal-title fw-bold"><i class="bi bi-currency-exchange me-2"></i> Achat USDT</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form method="POST" action="{% url 'commander_service' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="type_service" value="usdt">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Adrès Bous (Wallet Address - TRC20 / BEP20)</label>
+                        <input type="text" name="wallet_address" class="form-control rounded-pill" placeholder="Antre adrès walet ou a" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Nimewo WhatsApp</label>
+                        <input type="tel" name="whatsapp" class="form-control rounded-pill" placeholder="Eg: +509 XXXX XXXX" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Imèl (Email)</label>
+                        <input type="email" name="email" class="form-control rounded-pill" placeholder="ou@example.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Kantite USDT</label>
+                        <input type="number" id="usdtQty" name="montant_usd" class="form-control rounded-pill" placeholder="Eg: 10" min="1" required oninput="kalkileUsdt()">
+                    </div>
+                    <div class="alert alert-success rounded-3 py-2 small mb-3 bg-success bg-opacity-10 border-0 text-success">
+                        <div><strong>Taux USDT:</strong> 1 USDT = 141 HTG</div>
+                        <div class="mt-1 fw-bold" id="usdtTotalHTG">Total: 0 HTG</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Mwayen Peman</label>
+                        <select name="moyen_paiement" class="form-select rounded-pill" required>
+                            <option value="" selected disabled>Chwazi opsyon peman</option>
+                            <option value="natcash">Natcash (Kòd Ajan: 336164)</option>
+                            <option value="moncash">Moncash (Nimewo: 47083431)</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-muted">Prèv Peman (Capture / Reçu)</label>
+                        <input type="file" name="preuve" class="form-control rounded-3" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-success rounded-pill w-100 fw-bold py-2">Valide Acha USDT</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 3. MODAL ABONNEMENT NETFLIX -->
+<div class="modal fade" id="netflixModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <div class="modal-header bg-danger text-white rounded-top-4">
+                <h5 class="modal-title fw-bold"><i class="bi bi-tv me-2"></i> Abonnement Netflix</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form method="POST" action="{% url 'commander_service' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="type_service" value="netflix">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Imèl (Email) pou resevwa detay yo</label>
+                        <input type="email" name="email" class="form-control rounded-pill" placeholder="ou@example.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Nimewo WhatsApp</label>
+                        <input type="tel" name="whatsapp" class="form-control rounded-pill" placeholder="Eg: +509 XXXX XXXX" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Pake Abònman</label>
+                        <select name="pake" class="form-select rounded-pill" required>
+                            <option value="" selected disabled>Chwazi pake</option>
+                            <option value="1mwa">1 Mwa - Standard / Premium</option>
+                        </select>
+                    </div>
+                    <div class="alert alert-danger rounded-3 py-2 small mb-3 bg-danger bg-opacity-10 border-0 text-danger">
+                        * Yon fwa peman an apwouve, detay akò kont la ap voye dirèkteman sou imèl ou.
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Mwayen Peman</label>
+                        <select name="moyen_paiement" class="form-select rounded-pill" required>
+                            <option value="" selected disabled>Chwazi opsyon peman</option>
+                            <option value="natcash">Natcash (Kòd Ajan: 336164)</option>
+                            <option value="moncash">Moncash (Nimewo: 47083431)</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-muted">Prèv Peman (Capture / Reçu)</label>
+                        <input type="file" name="preuve" class="form-control rounded-3" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-danger rounded-pill w-100 fw-bold py-2">Valide Abònman</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 4. MODAL CARTES CADEAUX IPHONE -->
+<div class="modal fade" id="appleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <div class="modal-header bg-dark text-white rounded-top-4">
+                <h5 class="modal-title fw-bold"><i class="bi bi-apple me-2"></i> Cartes Cadeaux iPhone</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form method="POST" action="{% url 'commander_service' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="type_service" value="apple">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Imèl (Email) pou resevwa kòd kat la</label>
+                        <input type="email" name="email" class="form-control rounded-pill" placeholder="ou@example.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Nimewo WhatsApp</label>
+                        <input type="tel" name="whatsapp" class="form-control rounded-pill" placeholder="Eg: +509 XXXX XXXX" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Montan Kat la ($)</label>
+                        <input type="number" name="montant_usd" class="form-control rounded-pill" placeholder="Eg: 10, 25, 50" min="5" required>
+                    </div>
+                    <div class="alert alert-secondary rounded-3 py-2 small mb-3">
+                        * Kòd Apple Gift Card la ap voye sou imèl ou apre nou fin verifye peman an.
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Mwayen Peman</label>
+                        <select name="moyen_paiement" class="form-select rounded-pill" required>
+                            <option value="" selected disabled>Chwazi opsyon peman</option>
+                            <option value="natcash">Natcash (Kòd Ajan: 336164)</option>
+                            <option value="moncash">Moncash (Nimewo: 47083431)</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-muted">Prèv Peman (Capture / Reçu)</label>
+                        <input type="file" name="preuve" class="form-control rounded-3" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-dark rounded-pill w-100 fw-bold py-2">Valide Kòmand</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Seksyon Produits Récents -->
+<div class="container my-5" id="produits">
+    <h3 class="fw-bold mb-4">Nos produits récents</h3>
+    <div class="row g-4">
+        {% for produit in produits %}
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                {% if produit.image %}
+                    <div class="text-center p-4 bg-light">
+                        <img src="{{ produit.image.url }}" class="rounded-3" style="height: 130px; width: 130px; object-fit: contain;" alt="{{ produit.nom }}">
+                    </div>
+                {% else %}
+                    <div class="bg-light d-flex align-items-center justify-content-center" style="height: 150px;">
+                        <i class="bi bi-image text-muted fs-1"></i>
+                    </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <h6 class="card-title fw-bold text-truncate">{{ produit.nom }}</h6>
+                        <p class="fw-bold text-primary mb-2">${{ produit.prix }}</p>
+                    </div>
+                    
+                    <div class="d-flex gap-2 mt-2">
+                        <a href="{% url 'detail_produit' produit.id %}" class="btn btn-sm btn-outline-primary rounded-pill w-50">Détails</a>
+                        <a href="{% url 'ajouter_panier' produit.id %}" class="btn btn-sm btn-primary rounded-pill w-50"><i class="bi bi-cart-plus"></i> Panye</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5 text-muted">
+            <p>Aucun produit disponible pour le moment.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Script kalkil yo -->
+<script>
+    function kalkileMeru() {
+        let montan = document.getElementById('meruUSD').value;
+        let total = montan ? montan * 143 : 0;
+        document.getElementById('meruHTG').innerText = "Total: " + total.toLocaleString() + " HTG";
+    }
+
+    function kalkileUsdt() {
+        let montan = document.getElementById('usdtQty').value;
+        let total = montan ? montan * 141 : 0;
+        document.getElementById('usdtTotalHTG').innerText = "Total: " + total.toLocaleString() + " HTG";
+    }
+</script>
+{% endblock %}

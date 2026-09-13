@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JeffTech Multi_Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top py-3 border-bottom shadow-sm">
+        <div class="container-fluid px-4">
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center fw-bold text-primary fs-5 me-3" href="{% url 'accueil' %}">
+                <i class="bi bi-bag-check-fill me-2 fs-4"></i> JeffTech
+            </a>
+
+            <!-- Bouton Responsive (Mobil) -->
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <!-- Meni Lyen yo -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-semibold nav-links">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark px-2 nav-item-link" href="{% url 'accueil' %}">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted px-2 nav-item-link" href="#produits">Produits</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted px-2 nav-item-link" href="{% url 'categories' %}">Catégories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted px-2 nav-item-link" href="{% url 'apropos' %}">À propos</a>
+                    </li>
+                </ul>
+
+                <!-- Bara Rechèch (Ajiste la genişlik / width) -->
+                <form class="d-flex mx-lg-2 my-2 my-lg-0 flex-grow-1 search-box" style="max-width: 260px;" action="{% url 'recherche' %}" method="GET">
+                    <div class="input-group w-100">
+                        <input type="text" name="q" class="form-control bg-light border-0 rounded-start-pill px-3" placeholder="Rechercher..." value="{{ request.GET.q }}">
+                        <button class="btn btn-light border-0 rounded-end-pill text-muted pe-3" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Zòn Panier ak Kont -->
+                <div class="d-flex align-items-center ms-lg-2 gap-2">
+                    
+                    <!-- Bouton Mes Commandes -->
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'mes_commandes' %}" class="btn btn-outline-primary btn-sm rounded-pill px-3 d-flex align-items-center text-nowrap">
+                            <i class="bi bi-box-seam me-1"></i> Commandes
+                        </a>
+                    {% endif %}
+
+                    <!-- Panier -->
+                    <a href="{% url 'panier' %}" class="text-dark text-decoration-none fw-bold d-flex align-items-center position-relative px-2">
+                        <i class="bi bi-cart3 fs-4"></i>
+                        {% if nombre_articles_panier > 0 %}
+                            <span class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle p-1" style="font-size: 10px;">
+                                {{ nombre_articles_panier }}
+                            </span>
+                        {% endif %}
+                    </a>
+
+                    <!-- Meni Kont (Mon Compte / Connexion) -->
+                    {% if user.is_authenticated %}
+                        <div class="dropdown">
+                            <button class="btn btn-light rounded-pill border-0 dropdown-toggle fw-bold d-flex align-items-center gap-1 px-2" type="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle fs-5 text-primary"></i>
+                                <span class="text-truncate" style="max-width: 90px;">{{ user.username }}</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm rounded-3 mt-2 p-2">
+                                
+                                <!-- Seksyon Admin -->
+                                {% if user.is_staff %}
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2 rounded-3 text-dark fw-bold" href="{% url 'admin:index' %}">
+                                            <i class="bi bi-gear-fill text-secondary"></i> <span>Administration</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2 rounded-3 text-dark fw-bold" href="/admin-dashboard/commandes/">
+                                            <i class="bi bi-speedometer2 text-primary"></i> <span>Dashboard Commandes</span>
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                {% endif %}
+
+                                <!-- Bouton Dekoneksyon -->
+                                <li>
+                                    <a class="dropdown-item text-danger d-flex align-items-center gap-2 py-2 rounded-3" href="{% url 'deconnexion' %}">
+                                        <i class="bi bi-box-arrow-right"></i> <span>Déconnexion</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'connexion' %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">Connexion</a>
+                        <a href="{% url 'inscription' %}" class="btn btn-primary btn-sm rounded-pill px-3">S'inscrire</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Bouton Panier Flottant -->
+    {% if nombre_articles_panier > 0 %}
+    <a href="{% url 'panier' %}" class="panier-flottant" title="Voir mon panier">
+        <i class="bi bi-cart-fill"></i>
+        <span class="panier-badge-flottant">{{ nombre_articles_panier }}</span>
+    </a>
+    {% endif %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const links = document.querySelectorAll(".nav-item-link");
+
+            const activeHref = localStorage.getItem("activeNav") || (links[0] ? links[0].getAttribute("href") : "");
+
+            links.forEach(link => {
+                if (link.getAttribute("href") === activeHref) {
+                    link.classList.add("active-link");
+                    link.classList.remove("text-muted");
+                    link.classList.add("text-dark");
+                } else {
+                    link.classList.remove("active-link");
+                }
+
+                link.addEventListener("click", function () {
+                    links.forEach(l => {
+                        l.classList.remove("active-link");
+                        l.classList.add("text-muted");
+                        l.classList.remove("text-dark");
+                    });
+                    this.classList.add("active-link");
+                    this.classList.remove("text-muted");
+                    this.classList.add("text-dark");
+                    localStorage.setItem("activeNav", this.getAttribute("href"));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
