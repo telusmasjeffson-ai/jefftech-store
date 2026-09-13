@@ -1,10 +1,14 @@
+import random
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Q
-from .models import Produit, Categorie, Commande, CommandeItem
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.contrib import messages
+from .models import Produit, Categorie, Commande, CommandeItem, EmailVerification
 
 
 def accueil(request):
@@ -111,7 +115,6 @@ def paiement(request):
         preuve = request.FILES.get('preuve')
 
         if moyen_paiement and whatsapp and preuve:
-            # 1. Kreye kòmand lan an premye
             commande = Commande.objects.create(
                 user=request.user,
                 moyen_paiement=moyen_paiement,
@@ -122,7 +125,6 @@ def paiement(request):
                 statut='en_attente'
             )
 
-            # 2. Kreye chak CommandeItem pou chak pwodwi ki te nan panyen an
             for item in articles:
                 CommandeItem.objects.create(
                     commande=commande,
@@ -131,7 +133,6 @@ def paiement(request):
                     quantite=item['quantite']
                 )
 
-            # 3. Vide panyen an
             request.session['panier'] = {}
             return render(request, 'store/confirmation.html')
 
@@ -142,7 +143,6 @@ def paiement(request):
     return render(request, 'store/paiement.html', context)
 
 
-# Fonksyon pou trete tout demann sèvis siplemantè yo (Meru, USDT, Netflix, elatriye)
 @login_required(login_url='connexion')
 def commander_service(request):
     if request.method == 'POST':
@@ -174,12 +174,55 @@ def inscription(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('accueil')
+            user = form.save(commit=False)
+            user.is_active = False  # Inaktif jiskaske l mete kòd verifikasyon an
+            user.save()
+
+            # Jenere epi sove kòd verifikasyon 6 chif la
+            verification, created = EmailVerification.objects.get_or_create(user=user)
+            verification.code = str(random.randint(100000, 999999))
+            verification.save()
+
+            # Voye imèl la
+            send_mail(
+                'Kòd Verifikasyon Kont JeffTech Ou',
+                f'Bonjou {user.username},\n\nKòd verifikasyon ou an se: {verification.code}\n\nAntre kòd sa a sou sit la pou aktive kont ou.',
+                None,
+                [user.email],
+                fail_silently=False,
+            )
+
+            request.session['verify_user_id'] = user.id
+            return redirect('verify_code')
     else:
         form = UserCreationForm()
     return render(request, 'store/inscription.html', {'form': form})
+
+
+def verify_code_view(request):
+    user_id = request.session.get('verify_user_id')
+    if not user_id:
+        return redirect('inscription')
+    
+    user = User.objects.get(id=user_id)
+    verification = EmailVerification.objects.get(user=user)
+
+    if request.method == 'POST':
+        entered_code = request.POST.get('code')
+        
+        if entered_code == verification.code:
+            user.is_active = True
+            user.save()
+            
+            verification.delete()
+            del request.session['verify_user_id']
+            
+            messages.success(request, "Kont ou aktive avèk siksè! Ou ka konekte kounye a.")
+            return redirect('connexion')
+        else:
+            messages.error(request, "Kòd la pa bon. Eseye ankò.")
+
+    return render(request, 'store/verify_code.html')
 
 
 def connexion_user(request):

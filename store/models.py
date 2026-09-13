@@ -1,6 +1,6 @@
+import random
 from django.db import models
 from django.contrib.auth.models import User
-
 
 class Categorie(models.Model):
     nom = models.CharField(max_length=100)
@@ -80,3 +80,9 @@ class CommandeItem(models.Model):
 
     def __str__(self):
         return f"{self.quantite} x {self.produit.nom if self.produit else 'Pwodui efase'} pou Kòmand #{self.commande.id}"
+
+
+class EmailVerification(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)

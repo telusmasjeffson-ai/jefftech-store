@@ -8,6 +8,7 @@ urlpatterns = [
     path('ajouter-au-panier/<int:produit_id>/', views.ajouter_au_panier, name='ajouter_au_panier'),
     path('diminuer/<int:produit_id>/', views.diminuer_quantite, name='diminuer_quantite'),
     path('supprimer/<int:produit_id>/', views.supprimer_du_panier, name='supprimer_du_panier'),
+
     
     # Lòt wout yo
     path('paiement/', views.paiement, name='paiement'),
@@ -25,4 +26,5 @@ urlpatterns = [
     path('panier/ajouter/<int:produit_id>/', views.ajouter_panier, name='ajouter_panier'),
     path('produit/<int:produit_id>/', views.detail_produit, name='detail_produit'),
     path('commander-service/', views.commander_service, name='commander_service'),
+    path('verify-code/', views.verify_code_view, name='verify_code'),
 ]

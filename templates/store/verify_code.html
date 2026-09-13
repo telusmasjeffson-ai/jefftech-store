@@ -1,0 +1,16 @@
+{% extends 'store/base.html' %}
+{% block content %}
+<div class="container mt-5" style="max-width: 500px;">
+    <h2>Antre Kòd Verifikasyon an</h2>
+    <p>Nou voye yon kòd 6 chif nan adrès imèl ou. Tcheke l pou aktive kont ou.</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="code" class="form-label">Kòd Verifikasyon</label>
+            <input type="text" class="form-label form-control" id="code" name="code" required maxlength="6">
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Verifye Kont Mwen</button>
+    </form>
+</div>
+{% endblock %}
